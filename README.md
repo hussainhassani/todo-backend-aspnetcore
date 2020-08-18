@@ -21,7 +21,7 @@ This is an implementation of the [Todo-Backend](http://todobackend.com) API in C
 
 ## URIs
 * Local Docker (full stack on one VM)
-  * API: [http://localhost:8080](http://localhost:8080)
+  * API: [http://localhost:8888](http://localhost:8888)
   * Consul UI: [http://localhost:8500/ui](http://localhost:8500/ui)
   * Run ToDo Backend tests [http://todobackend.com/specs/index.html?http://localhost:8080](http://todobackend.com/specs/index.html?http://localhost:8080)
 
