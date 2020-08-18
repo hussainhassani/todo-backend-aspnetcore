@@ -33,6 +33,8 @@ namespace TodoBackend.Api
         private readonly Container _container;
         private readonly IConfigurationRoot _configuration;
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IWebHostEnvironment env)
         {
             _container = new Container();
@@ -52,6 +54,17 @@ namespace TodoBackend.Api
                 .WriteTo.LiterateConsole()
                 .Enrich.WithMachineName()
                 .CreateLogger();
+
+            services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                              builder =>
+                              {
+                                  builder.WithOrigins("http://localhost:8989")
+                                                    .AllowAnyHeader()
+                                                    .AllowAnyMethod();
+                              });
+        });
 
             services.AddMvc()
                 .AddNewtonsoftJson(opt =>
@@ -86,7 +99,7 @@ namespace TodoBackend.Api
             }
             
             app.UseRouting();
-            app.UseCors();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();

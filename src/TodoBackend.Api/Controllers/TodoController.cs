@@ -14,6 +14,7 @@ using TodoBackend.Core.Ports.Queries.Messages;
 namespace TodoBackend.Api.Controllers
 {
     [Route("")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class TodoController : ControllerBase
     {
         private readonly IAmACommandProcessor _commandProcessor;
