@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>TodoBackend.Core</AssemblyName>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -10,8 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Darker" Version="0.9.0" />
     <PackageReference Include="Darker.RequestLogging" Version="0.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
-    <PackageReference Include="Paramore.Brighter" Version="7.0.160" />
+    <PackageReference Include="Paramore.Brighter" Version="7.1.0" />
     <PackageReference Include="Serilog" Version="2.5.0" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
   </ItemGroup>

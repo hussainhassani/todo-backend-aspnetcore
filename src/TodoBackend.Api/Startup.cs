@@ -24,6 +24,7 @@ using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using TodoBackend.Api.Data;
 using TodoBackend.Core.Domain;
+using Microsoft.Extensions.Hosting;
 
 namespace TodoBackend.Api
 {
@@ -32,7 +33,7 @@ namespace TodoBackend.Api
         private readonly Container _container;
         private readonly IConfigurationRoot _configuration;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             _container = new Container();
             _configuration = new ConfigurationBuilder()
@@ -52,15 +53,17 @@ namespace TodoBackend.Api
                 .Enrich.WithMachineName()
                 .CreateLogger();
 
-            services.AddCors();
-            services.AddMvcCore()
-                .AddJsonFormatters(opt =>
+            services.AddMvc()
+                .AddNewtonsoftJson(opt =>
                 {
-                    opt.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    opt.Converters.Add(new StringEnumConverter());
-                    opt.Formatting = Formatting.Indented;
-                    opt.NullValueHandling = NullValueHandling.Ignore;
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    opt.SerializerSettings.Formatting = Formatting.Indented;
+                    opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 });
+
+                services.AddControllersWithViews();
+                services.AddRazorPages();
 
 
             services.AddSingleton<IControllerActivator>(new SimpleInjectorControllerActivator(_container));
@@ -69,7 +72,7 @@ namespace TodoBackend.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddSerilog(Log.Logger);
 
@@ -81,9 +84,13 @@ namespace TodoBackend.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseRouting();
+            app.UseCors();
 
-            app.UseCors(opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseMvc();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
 
             EnsureDatabaseCreated();
         }

@@ -1,12 +1,12 @@
-version: '2'
+version: '3.8'
 
 services:
   sqlserver:
     image: microsoft/mssql-server-linux
     ports:
-      - 1433
+      - "1444:1433"
     volumes:
-      - /opt/mssql/data:/opt/mssql/data
+      - sqlData:/var/opt/mssql/data
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=P@ssword1
@@ -19,7 +19,7 @@ services:
       - SERVICE_NAME=api
       - ASPNETCORE_ENVIRONMENT=docker
     ports:
-      - 5000
+      - "8888:5000"
     links:
       - sqlserver
 
@@ -47,3 +47,5 @@ services:
     command: -internal -resync 600 consul://consul:8500
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
+volumes:
+  sqlData:
