@@ -33,10 +33,24 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": ".NET Core Docker Attach",
             "type": "coreclr",
             "request": "attach",
-            "processId": "${command.pickProcess}"
+            "justMyCode": false,
+            // "logging": {
+            //     "moduleLoad": false
+            // },
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": [ "exec", "-i", "todobackend-api" ],
+                "debuggerPath": "/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceRoot}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/app/src/": "${workspaceRoot}/src/"
+            }
         }
     ]
 }

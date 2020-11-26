@@ -12,9 +12,13 @@ services:
       - SA_PASSWORD=P@ssword1
 
   api:
+    container_name: todobackend-api
     image: todobackend-api
     build:
       context: .
+      target: debug
+    volumes: 
+      - "/Users/hmbp/Documents/public-repos/todo-backend-aspnetcore/:/app"
     environment:
       - SERVICE_NAME=api
       - ASPNETCORE_ENVIRONMENT=docker
